@@ -1,47 +1,35 @@
-﻿namespace vsR;
+﻿namespace Mzda;
 
 class Program
 {
     static void Main(string[] args)
     {
-        var rng = new Random();
+        Console.WriteLine("=== Výpočet čisté mzdy (2023) ===");
+        Console.Write("Zadejte hrubou mzdu (Kč): ");
+        decimal hrubaMzda = Convert.ToDecimal(Console.ReadLine());
 
-        bool playAgain = true;
-        while (playAgain)
-        {
-            int secnum = rng.Next(0, 101);
-            bool guessed = false;
+        decimal zdravotniPojisteni = hrubaMzda * 0.045m;  
+        decimal socialniPojisteni = hrubaMzda * 0.075m;   
 
-            while (guessed != true)
-            {
-                Console.Write("Hádej skryté číslo, zadej celé číslo od 0 do 100: ");
+        decimal superhrubaMzda = hrubaMzda * 1.338m; 
 
-                string? input = Console.ReadLine();
-                int numero = Convert.ToInt32(input);
+        decimal danPredSlevou = superhrubaMzda * 0.15m;
 
-                if (numero < secnum)
-                {
-                    Console.WriteLine("Zkus větší číslo");
-                }
-                else if (numero > secnum)
-                {
-                    Console.WriteLine("Zkus menší číslo");
-                }
-                else
-                {
-                    Console.WriteLine("Uhodnul si skryté číslo");
-                    guessed = true;
-                }
+        decimal slevaNaPoplatnika = 2570m;
+        
+        decimal danPoSleve = danPredSlevou - slevaNaPoplatnika;
+        if (danPoSleve < 0) danPoSleve = 0;
 
-            }
-            Console.WriteLine("Chceš hrát znovu? ano/ne");
-            string? answer = Console.ReadLine();
-            if (answer != "ano")
-            {
-                playAgain = false;
-            }
+        decimal cistaMzda = hrubaMzda - zdravotniPojisteni - socialniPojisteni - danPoSleve;
 
-        }
-        Console.WriteLine("Konec hry");
+        Console.WriteLine("\n--- Výsledek ---");
+        Console.WriteLine($"Hrubá mzda: {hrubaMzda:N0} Kč");
+        Console.WriteLine($"Zdravotní pojištění: {zdravotniPojisteni:N0} Kč");
+        Console.WriteLine($"Sociální pojištění: {socialniPojisteni:N0} Kč");
+        Console.WriteLine($"Daň před slevou: {danPredSlevou:N0} Kč");
+        Console.WriteLine($"Sleva na poplatníka: {slevaNaPoplatnika:N0} Kč");
+        Console.WriteLine($"Daň po slevě: {danPoSleve:N0} Kč");
+        Console.WriteLine($"Čistá mzda: {cistaMzda:N0} Kč");
     }
 }
+
